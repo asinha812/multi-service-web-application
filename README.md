@@ -178,12 +178,13 @@ a. Go to the Amazon RDS databases page in the AWS console. You should see the wo
 ![Alt text](image-32.png)
 b. In the details of your Amazon RDS database, the hostname will be shown as the Endpoint in the Connectivity & security section.
 ![Alt text](image-33.png)
-In your terminal, enter the following command to set an environment variable for your MySQL host. Be sure to replace “<your-endpoint>” with the hostname of your RDS instance.
-1. export MYSQL_HOST=<your-endpoint>
+In your terminal, enter the following command to set an environment variable for your MySQL host. Be sure to replace “your-endpoint” with the hostname of your RDS instance.
 
-Next, run the following command in your terminal to connect to your MySQL database. Replace “<user>” and “<password>” with the master username and password you configured when creating your Amazon RDS database.
+1. export MYSQL_HOST="your-endpoint"
 
-1. mysql --user=<user> --password=<password> wordpress
+Next, run the following command in your terminal to connect to your MySQL database. Replace “user” and “password” with the master username and password you configured when creating your Amazon RDS database.
+
+1. mysql --user="user" --password="password" wordpress
 
 Finally, create a database user for your WordPress application and give the user permission to access the wordpress database.
 
