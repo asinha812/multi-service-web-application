@@ -12,8 +12,7 @@ In the modules that follow, we will see how to configure a WordPress installatio
  2. An Amazon RDS for MySQL database to store your WordPress data
  3. Wordpress EC2 instance in an Autoscaling Group (ASG) that is attached to an Application Load Balancer (ALB)
 
-# Here, in below steps we have shown to deploy wordpress with MySQL RDS with single EC2.
-But if you go to terraform manifests we have used HA env with 2 EC2 in each AZs in private subntes integrated with Internet Facing ALB which act as a front-end for our wordpress application. Using ALB DNS we can call our application/website. Later, we can add integrate Route53 DNS with SSL to secure our website.
+Terraform manifests we have used HA env with 2 EC2 in each AZs in private subntes integrated with Internet Facing ALB which act as a front-end for our wordpress application. Using ALB DNS we can call our application/website. Later, we can add integrate Route53 DNS with SSL to secure our website.
 Also, we can have Autoscaling Enabled with Load Balancer to distribute the traffic so as to reduce the latency during peak hours.
 
 ![Alt text](image-36.png)
@@ -24,7 +23,8 @@ We can go with saving plan or reserved instance approaoch for long term and also
 # Security
 We can go with WAF on top of our Application Load Balanacer to secure the application.
 
-# Implementation
+# Here, in below steps we have shown to deploy wordpress with MySQL RDS with single EC2 Implementation
+
 a. Open the AWS Management Console. When the screen loads, enter RDS in the search bar, then select RDS to open the service console.
 
 ![Alt text](image.png)
