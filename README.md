@@ -10,6 +10,7 @@ WordPress requires a MySQL database to store its data.
 In the modules that follow, we will see how to configure a WordPress installation using Amazon RDS for MySQL. To configure this WordPress site, we will create the following resources in AWS:
  1. An Amazon EC2 instance to install and host the WordPress application
  2. An Amazon RDS for MySQL database to store your WordPress data
+ 3. Wordpress EC2 instance in an Autoscaling Group (ASG) that is attached to an Application Load Balancer (ALB)
 
 # Here, in below steps we have shown to deploy wordpress with MySQL RDS with single EC2.
 But if you go to terraform manifests we have used HA env with 2 EC2 in each AZs in private subntes integrated with Internet Facing ALB which act as a front-end for our wordpress application. Using ALB DNS we can call our application/website. Later, we can add integrate Route53 DNS with SSL to secure our website.
