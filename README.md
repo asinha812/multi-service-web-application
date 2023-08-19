@@ -157,8 +157,8 @@ For Mac or Linux users:
 Open a terminal window. If you are on a Mac, you can use the default Terminal program that is installed, or you can use your own terminal.
  
 In your terminal, run the following commands to use SSH to connect to your instance. Replace the “<path/to/pem/file>” with the path to your file, e.g., “~/Downloads/wordpress.pem”, and the “<publicIpAddress>” with the public IP address for your EC2 instance.
-    1. chmod 400 <path/to/pem/file> 
-    2. ssh -i <path/to/pem/file> ec2-user@<public_IP_DNSAddress>
+1. chmod 400 <path/to/pem/file> 
+2. ssh -i <path/to/pem/file> ec2-user@<public_IP_DNSAddress>
 
 You should see the following in your terminal to indicate that you connected successfully:
 ![Alt text](image-31.png)
@@ -170,7 +170,7 @@ In this step, you connected to your EC2 instance using SSH. In the next step, yo
 You should have an active SSH session to your EC2 instance in the terminal. Now, you will connect to your MySQL database.
  
 First, run the following command in your terminal to install a MySQL client to interact with the database.
-    1. sudo yum install -y mysql
+1. sudo yum install -y mysql
 
 Next, find the hostname for your Amazon RDS database in the AWS console. In the details of your Amazon RDS database, the hostname will be shown as the Endpoint in the Connectivity & security section.
 
@@ -179,15 +179,15 @@ a. Go to the Amazon RDS databases page in the AWS console. You should see the wo
 b. In the details of your Amazon RDS database, the hostname will be shown as the Endpoint in the Connectivity & security section.
 ![Alt text](image-33.png)
 In your terminal, enter the following command to set an environment variable for your MySQL host. Be sure to replace “<your-endpoint>” with the hostname of your RDS instance.
-    1. export MYSQL_HOST=<your-endpoint>
+1. export MYSQL_HOST=<your-endpoint>
 Next, run the following command in your terminal to connect to your MySQL database. Replace “<user>” and “<password>” with the master username and password you configured when creating your Amazon RDS database.
-    1. mysql --user=<user> --password=<password> wordpress
+1. mysql --user=<user> --password=<password> wordpress
 Finally, create a database user for your WordPress application and give the user permission to access the wordpress database.
 Run the following commands in your terminal:
-    1. CREATE USER 'wordpress' IDENTIFIED BY 'wordpress-pass';
-    2. GRANT ALL PRIVILEGES ON wordpress.* TO wordpress;
-    3. FLUSH PRIVILEGES;
-    4. Exit
+1. CREATE USER 'wordpress' IDENTIFIED BY 'wordpress-pass';
+2. GRANT ALL PRIVILEGES ON wordpress.* TO wordpress;
+3. FLUSH PRIVILEGES;
+4. Exit
 
 As a best practice, you should use a better password than wordpress-pass to secure your database.
 Write down both the username and password that you configure, as they will be needed in the next module when setting up your WordPress installation.
