@@ -23,7 +23,7 @@ We can go with saving plan or reserved instance approaoch for long term and also
 # Security
 We can go with WAF on top of our Application Load Balanacer to secure the application.
 
-# Here, in below steps we have shown to deploy wordpress with MySQL RDS with single EC2 Implementation (for defined archt refer terraform manifests)
+# Here, in below steps we have shown to deploy wordpress with MySQL RDS with single EC2 Implementation (for above archt refer terraform manifests)
 
 a. Open the AWS Management Console. When the screen loads, enter RDS in the search bar, then select RDS to open the service console.
 
