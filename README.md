@@ -197,3 +197,106 @@ Run the following commands in your terminal:
 
 As a best practice, you should use a better password than wordpress-pass to secure your database.
 Write down both the username and password that you configure, as they will be needed in the next module when setting up your WordPress installation.
+
+To run WordPress, you need to run a web server on your EC2 instance. The open source Apache web server is the most popular web server used with WordPress.
+
+To install Apache on your EC2 instance, run the following command in your terminal:
+
+1. sudo yum install -y httpd
+
+To run WordPress, you need to run a web server on your EC2 instance. The open source Apache web server is the most popular web server used with WordPress.
+
+To install Apache on your EC2 instance, run the following command in your terminal:
+
+1. sudo yum install -y httpd
+
+In this step, you will download the WordPress software and set up the configuration.
+
+First, download and uncompress the software by running the following commands in your terminal:
+
+1. wget https://wordpress.org/latest.tar.gz
+2. tar -xzf latest.tar.gz
+
+If you run ls to view the contents of your directory, you will see a tar file and a directory called wordpress with the uncompressed contents.
+
+1. $ ls
+2. latest.tar.gz  wordpress
+
+Change the directory to the wordpress directory and create a copy of the default config file using the following commands:
+
+1. cd wordpress
+2. cp wp-config-sample.php wp-config.php
+
+Then, open the wp-config.php file using the nano editor by running the following command.
+
+1. vi wp-config.php
+
+You need to edit two areas of configuration.
+
+First, edit the database configuration by changing the following lines:
+
+1. // ** MySQL settings - You can get this info from your web host ** //
+2. /** The name of the database for WordPress */
+3. define( 'DB_NAME', 'database_name_here' );
+4. 
+5. /** MySQL database username */
+6. define( 'DB_USER', 'username_here' );
+7. 
+8. /** MySQL database password */
+9. define( 'DB_PASSWORD', 'password_here' );
+10. 
+11. /** MySQL hostname */
+12. define( 'DB_HOST', 'localhost' );
+
+The values should be:
+
+1. DB_NAME: “wordpress”
+2. DB_USER: The name of the user you created in the database in the previous module
+3. DB_PASSWORD: The password for the user you created in the previous module
+4. DB_HOST: The hostname of the database that you found in the previous module
+
+The second configuration section you need to configure is the Authentication Unique Keys and Salts. It looks as follows in the configuration file:
+
+1. /**#@+
+2. * Authentication Unique Keys and Salts.
+3. *
+4. * Change these to different unique phrases!
+5. * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/  WordPress.org secret-key service}
+6.  * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
+7.  *
+8.  * @since 2.6.0
+9. */
+10. define( 'AUTH_KEY',         'put your unique phrase here' );
+11. define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
+12. define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
+13. define( 'NONCE_KEY',        'put your unique phrase here' );
+14. define( 'AUTH_SALT',        'put your unique phrase here' );
+15. define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
+16. define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
+17. define( 'NONCE_SALT',       'put your unique phrase here' );
+
+You can save and exit from vim.
+
+With the configuration updated, you are almost ready to deploy your WordPress site. In the next step, you will make your WordPress site live.
+
+In this step, you will make your Apache web server handle requests for WordPress.
+
+First, install the application dependencies you need for WordPress. In your terminal, run the following command.
+
+1. sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+
+Second, change to the proper directory by running the following command:
+
+2. cd /home/ec2-user
+
+Then, copy your WordPress application files into the /var/www/html directory used by Apache.
+
+3. sudo cp -r wordpress/* /var/www/html/
+
+Finally, restart the Apache web server to pick up the changes.
+4. sudo service httpd restart
+
+You should see the WordPress welcome page and the five-minute installation process.
+![Alt text](image-34.png)
+
+That’s it. You have a live, publicly accessible WordPress installation using a fully managed MySQL database on Amazon RDS.
