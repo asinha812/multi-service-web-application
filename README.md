@@ -102,3 +102,92 @@ a. Open the key pair (login) section and choose Create new key pair for your ins
 
 b. Give your key pair a name. Then choose the Create key pair button, which will download the .pem file to your machine. You will use this file in the next module.
 ![Alt text](image-17.png)
+
+You need to configure a security group before launching your instance. Security groups are networking rules that describe the kind of network traffic that is allowed to your EC2 instance. You want to allow two kinds of traffic to your instance:
+
+SSH traffic from your current IP address so you can use the SSH protocol to log in to your EC2 instance and configure WordPress
+HTTP traffic from all IP addresses so that users can view your WordPress site.
+ 
+a. To configure this, select Allow SSH traffic from My IP and select Allow HTTP traffic from the internet.
+![Alt text](image-18.png)
+![Alt text](image-19.png)
+
+b. In the Network settings section, choose the Edit button. Scroll down to Firewall (security groups) and enter wordpress for the Security group name.
+![Alt text](image-20.png)
+![Alt text](image-21.png)
+
+It is now time to launch your EC2 instance.
+a. Choose the Launch instance button to create your EC2 instance.
+![Alt text](image-22.png)
+You have successfully launched your EC2 instance. In the next module, we will configure your Amazon RDS database to work with your EC2 instance.
+
+First, you will modify your Amazon RDS database to allow network access from your EC2 instance.
+In the previous module, you created security group rules to allow SSH and HTTP traffic to your WordPress EC2 instance. The same principle applies here. This time, you want to allow certain traffic from your EC2 instance into your Amazon RDS database.
+a. To configure this, go to the Amazon RDS databases page in the AWS console. Choose the MySQL database you created in the earlier module in this guide.
+![Alt text](image-23.png)
+
+b. Scroll to the Connectivity & security tab in the display and choose the security group listed in VPC security groups. The console will take you to the security group configured for your database.
+![Alt text](image-24.png)
+
+c. Select the Inbound rules tab, then choose the Edit inbound rules button to change the rules for your security group.
+![Alt text](image-25.png)
+
+d. The default security group has a rule that allows all inbound traffic from other instances in the default security group. However, since your WordPress EC2 instance is not in that security group, it will not have access to the Amazon RDS database.
+Change the Type property to MYSQL/Aurora, which will update the Protocol and Port range to the proper values. Then, remove the current security group value configured for the Source.
+![Alt text](image-26.png)
+![Alt text](image-27.png)
+
+e. For Source, enter wordpress. The console will show the available security groups that are configured. Choose the wordpress security group that you used for your EC2 instance.
+![Alt text](image-28.png)
+
+f. After you choose the wordpress security group, the security group ID will be filled in. This rule will allow MySQL access to any EC2 instance with that security group configured.
+When you’re finished, choose the Save rules button to save your changes.
+![Alt text](image-29.png)
+
+Now that your EC2 instance has access to your Amazon RDS database, you will use SSH to connect to your EC2 instance and run some configuration commands.
+ 
+
+a. Go to the EC2 instances page in the console. You should see the EC2 instance you created for the WordPress installation. Select it and you will see the Public IPv4 address and the Public IPv4 DNS in the instance description.
+![Alt text](image-30.png)
+
+b. Previously, you downloaded the .pem file for the key pair of your instance. Locate that file now. It will likely be in a Downloads folder on your desktop.
+ 
+For Mac or Linux users:
+ 
+Open a terminal window. If you are on a Mac, you can use the default Terminal program that is installed, or you can use your own terminal.
+ 
+In your terminal, run the following commands to use SSH to connect to your instance. Replace the “<path/to/pem/file>” with the path to your file, e.g., “~/Downloads/wordpress.pem”, and the “<publicIpAddress>” with the public IP address for your EC2 instance.
+    1. chmod 400 <path/to/pem/file> 
+    2. ssh -i <path/to/pem/file> ec2-user@<public_IP_DNSAddress>
+
+You should see the following in your terminal to indicate that you connected successfully:
+![Alt text](image-31.png)
+
+For Windows users:
+ 
+You will need to use PuTTY, an SSH client for Windows, to connect to your EC2 instance. For instructions on doing this, see this guide for Connecting to your Linux instance from Windows using PuTTY. You will need the .pem file you downloaded and the public IP address of your EC2 instance.
+In this step, you connected to your EC2 instance using SSH. In the next step, you will connect to your Amazon RDS database from your EC2 instance and create a database user for the WordPress application.
+You should have an active SSH session to your EC2 instance in the terminal. Now, you will connect to your MySQL database.
+ 
+First, run the following command in your terminal to install a MySQL client to interact with the database.
+    1. sudo yum install -y mysql
+
+Next, find the hostname for your Amazon RDS database in the AWS console. In the details of your Amazon RDS database, the hostname will be shown as the Endpoint in the Connectivity & security section.
+
+a. Go to the Amazon RDS databases page in the AWS console. You should see the wordpress database you created for the WordPress installation. Select it to find the hostname for your Amazon RDS database.
+![Alt text](image-32.png)
+b. In the details of your Amazon RDS database, the hostname will be shown as the Endpoint in the Connectivity & security section.
+![Alt text](image-33.png)
+In your terminal, enter the following command to set an environment variable for your MySQL host. Be sure to replace “<your-endpoint>” with the hostname of your RDS instance.
+    1. export MYSQL_HOST=<your-endpoint>
+Next, run the following command in your terminal to connect to your MySQL database. Replace “<user>” and “<password>” with the master username and password you configured when creating your Amazon RDS database.
+    1. mysql --user=<user> --password=<password> wordpress
+Finally, create a database user for your WordPress application and give the user permission to access the wordpress database.
+Run the following commands in your terminal:
+    1. CREATE USER 'wordpress' IDENTIFIED BY 'wordpress-pass';
+    2. GRANT ALL PRIVILEGES ON wordpress.* TO wordpress;
+    3. FLUSH PRIVILEGES;
+    4. Exit
+
+As a best practice, you should use a better password than wordpress-pass to secure your database.
+Write down both the username and password that you configure, as they will be needed in the next module when setting up your WordPress installation.
