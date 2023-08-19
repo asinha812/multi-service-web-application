@@ -22,6 +22,7 @@ Terraform downloads the aws provider and installs it in a hidden subdirectory of
 # Format and validate the configuration
 
 $ terraform fmt
+
 $ terraform validate
 
 # Create infrastructure
